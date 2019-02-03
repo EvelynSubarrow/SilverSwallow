@@ -1,0 +1,6 @@
+common
+*.json
+*.cif
+*.sh
+*.pyc
+*.log

@@ -1,0 +1,7 @@
+{
+    "database-string": "dbname='swallow_data' user='user'",
+    "nr-username": "USERNAME",
+    "nr-password": "PASSWORD",
+    "trust-identifier": "swallow_HOSTNAME",
+    "trust-subscribe": "/topic/TRAIN_MVT_ALL_TOC"
+}
