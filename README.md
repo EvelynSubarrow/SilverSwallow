@@ -3,8 +3,8 @@ This is the data collection portion of Swallow, responsible for parsing schedule
 live train movement data from TRUST.
 
 ## Dependencies
-[psycopg2](https://pypi.org/project/psycopg2/)
-[stomp.py](https://pypi.org/project/stomp.py/)
+* [psycopg2](https://pypi.org/project/psycopg2/)
+* [stomp.py](https://pypi.org/project/stomp.py/)
 
 ## Licence
 This project is licenced under the GNU GPL, version 3 (for now)
@@ -12,7 +12,6 @@ This project is licenced under the GNU GPL, version 3 (for now)
 ## Using SilverSwallow for the first time
 You'll need an email address and password for a Network Rail open data account. You can sign up
 [here](https://datafeeds.networkrail.co.uk/ntrod/login).
-
 It can take several months for your account to become active, and you'll have to
 specifically add SCHEDULE and TRUST to your account.
 
