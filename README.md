@@ -18,6 +18,8 @@ specifically add SCHEDULE and TRUST to your account.
 Once you have access to Network Rail data, you should rename `config.json.example` to `config.json`, substituting your
 Network Rail feed credentials, as well as those for your database.
 
+You should amend and appropriately rename `corpus_pull.sh`, then run it in order to retrieve location information.
+
 Next, you should amend and appropriately rename `cif_pull.sh.example`, then run it in order to retrieve the schedule snapshot for the week.
 
 You must initialise the database (`database_structure.py --init`), then run the parser (`parser.py datasets/sched.cif`), which will populate the
@@ -28,6 +30,7 @@ Finally, you can run `trust.py`, which inserts movement records from TRUST into 
 
 ### In short:
 ```
+./corpus_pull.sh
 ./cif_pull.sh
 ./database_structure.py --init
 ./parser.py datasets/sched.cif
