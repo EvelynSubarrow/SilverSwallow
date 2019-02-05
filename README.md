@@ -36,7 +36,7 @@ Finally, you can run `trust.py`, which inserts movement records from TRUST into 
 ./parser.py datasets/sched.cif
 ./renew_schedules.py
 ./flat_maintenance.py
-./trust.py &&
+./trust.py
 ```
 
 ## Keeping schedules current
