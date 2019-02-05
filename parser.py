@@ -31,7 +31,7 @@ def c_num(string):
 
 # CORPUS has fewer duplicate STANOX codes, for no particularly apparent reason
 def incorporate_corpus(include_nalco_only):
-    with open("datasets/CORPUSExtract.json", encoding="iso-8859-1") as f:
+    with open("datasets/corpus.json", encoding="iso-8859-1") as f:
         corpus = json.load(f)["TIPLOCDATA"]
     with database.DatabaseConnection() as db_connection, db_connection.new_cursor() as c:
         c.execute("BEGIN;")

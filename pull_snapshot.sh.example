@@ -1,4 +1,0 @@
-DATE=$(date +"%Y-%m-%dT%H%M")
-cd datasets/
-curl -L -u "USERNAME":"PASSWORD" -o sched_update.cif.gz 'https://datafeeds.networkrail.co.uk/ntrod/CifFileAuthenticate?type=CIF_ALL_UPDATE_DAILY&day=toc-update-thu.CIF.gz'
-pigz -vfd sched_update.cif.gz
