@@ -5,11 +5,14 @@ live train movement data from TRUST.
 ## Dependencies
 * [psycopg2](https://pypi.org/project/psycopg2/)
 * [stomp.py](https://pypi.org/project/stomp.py/)
+* [CommonSwallow](https://github.com/EvelynSubarrow/CommonSwallow)
 
 ## Licence
 This project is licenced under the GNU GPL, version 3 (for now)
 
 ## Using SilverSwallow for the first time
+Install the dependencies, making sure to put CommonSwallow in the same directory, under 'common'.
+
 You'll need an email address and password for a Network Rail open data account. You can sign up
 [here](https://datafeeds.networkrail.co.uk/ntrod/login).
 It can take several months for your account to become active, and you'll have to
@@ -30,6 +33,7 @@ Finally, you can run `trust.py`, which inserts movement records from TRUST into 
 
 ### In short:
 ```
+git clone https://github.com/EvelynSubarrow/CommonSwallow common
 ./corpus_pull.sh
 ./cif_pull.sh
 ./database_structure.py --init
