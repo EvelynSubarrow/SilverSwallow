@@ -52,3 +52,7 @@ A new schedule snapshot is published every day, at approximately 0100. In order 
 ./renew_schedules.py
 ./flat_maintenance.py
 ```
+
+## Frontends
+* [BerylliumSwallow](https://github.com/EvelynSubarrow/BerylliumSwallow) - curses-based interface
+* [CopperSwallow](https://github.com/EvelynSubarrow/CopperSwallow) - flask webapp
