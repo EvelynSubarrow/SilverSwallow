@@ -133,6 +133,7 @@ def initialise(d):
         );
         ALTER SEQUENCE sched_location_iid_seq OWNED BY schedule_locations.iid;
 
+        CREATE INDEX idx_sched_location_iid ON schedule_locations(iid);
         CREATE INDEX idx_sched_location_schedule ON schedule_locations(schedule_iid);
         """)
 
@@ -205,6 +206,7 @@ def initialise(d):
         );""")
         c.execute("CREATE INDEX idx_trust_movements_datetime_scheduled ON trust_movements(datetime_scheduled);")
         c.execute("CREATE INDEX idx_trust_movements_datetime_actual ON trust_movements(datetime_actual);")
+        c.execute("CREATE INDEX idx_trust_movements_flat_sched_iid ON trust_movements(flat_schedule_iid);")
         c.execute("CREATE INDEX idx_trust_movements_stanox ON trust_movements(stanox);")
 
         c.execute("""CREATE TABLE flat_timing(
