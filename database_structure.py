@@ -31,6 +31,9 @@ def initialise(d):
             nalco  VARCHAR(6) NOT NULL,
             tiploc VARCHAR(7),
             name   VARCHAR(32),
+            name_normalised VARCHAR,
+            name_passenger  VARCHAR,
+            disambiguation VARCHAR,
             stanox INTEGER,
             crs    VARCHAR(3),
             PRIMARY KEY(iid)

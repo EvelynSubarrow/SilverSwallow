@@ -104,7 +104,7 @@ def parse_cif(f):
             elif record_type == "TI" or record_type == "TA":
                 tiploc, caps_ident, nlc, nlc_check, description_tps, stanox, pomcp, crs, description_nlc = c_str(line[0:7]), c_num(line[7:9]), c_str(line[9:15]), line[15], c_str(line[16:42]), c_num(line[42:47]), c_num(line[47:51]), c_str_n(line[51:54]), c_str(line[54:70])
                 if record_type=="TI":
-                    c.execute("INSERT INTO locations(tiploc, nalco, name, stanox, crs) VALUES (%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING RETURNING tiploc,iid;", [tiploc, nlc, description_tps, stanox, crs])
+                    c.execute("INSERT INTO locations(tiploc, nalco, name, name_normalised, name_passenger, disambiguation, stanox, crs) VALUES (%s, %s, %s, %s, %s, NULL, %s, %s, %s) ON CONFLICT DO NOTHING RETURNING tiploc,iid;", [tiploc, nlc, description_tps, description_tps.title(), description_tps.title(), stanox, crs])
                     row = c.fetchone()
                     if row:
                         tl_map[row[0]] = row[1]
