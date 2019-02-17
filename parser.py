@@ -29,6 +29,10 @@ def c_num(string):
     else:
         return None
 
+# Returns TPS description, "normalised" TPS (ie titlecase w/ caps amendments), NR name, disambiguation (ie LL,HL,MML, etc)
+def fetch_names(tiploc, tps_desc):
+    return (tps_desc, tps_desc.title(), None, None)
+
 # CORPUS has fewer duplicate STANOX codes, for no particularly apparent reason
 def incorporate_corpus(include_nalco_only):
     with open("datasets/corpus.json", encoding="iso-8859-1") as f:
@@ -36,10 +40,10 @@ def incorporate_corpus(include_nalco_only):
     with database.DatabaseConnection() as db_connection, db_connection.new_cursor() as c:
         c.execute("BEGIN;")
         for entry in corpus:
-            tiploc, stanox, crs = c_str_n(entry["TIPLOC"]), c_str_n(entry["STANOX"]), c_str_n(entry["3ALPHA"])
+            tiploc, stanox, crs, tps_desc = c_str_n(entry["TIPLOC"]), c_str_n(entry["STANOX"]), c_str_n(entry["3ALPHA"]), c_str_n(entry["NLCDESC"])
             if tiploc or stanox or crs or include_nalco_only:
-                c.execute("INSERT INTO locations(tiploc, nalco, name, stanox, crs) VALUES (%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING;", [
-                    tiploc, entry["NLC"], c_str_n(entry["NLCDESC"]), stanox, crs])
+                c.execute("INSERT INTO locations(tiploc, nalco, name, name_normalised, name_passenger, disambiguation, stanox, crs) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING;", [
+                    tiploc, entry["NLC"], *fetch_names(tiploc, tps_desc), stanox, crs])
         c.execute("COMMIT;")
 
 def parse_cif(f):
@@ -104,18 +108,18 @@ def parse_cif(f):
             elif record_type == "TI" or record_type == "TA":
                 tiploc, caps_ident, nlc, nlc_check, description_tps, stanox, pomcp, crs, description_nlc = c_str(line[0:7]), c_num(line[7:9]), c_str(line[9:15]), line[15], c_str(line[16:42]), c_num(line[42:47]), c_num(line[47:51]), c_str_n(line[51:54]), c_str(line[54:70])
                 if record_type=="TI":
-                    c.execute("INSERT INTO locations(tiploc, nalco, name, name_normalised, name_passenger, disambiguation, stanox, crs) VALUES (%s, %s, %s, %s, %s, NULL, %s, %s) ON CONFLICT DO NOTHING RETURNING tiploc,iid;", [tiploc, nlc, description_tps, description_tps.title(), description_tps.title(), stanox, crs])
+                    c.execute("INSERT INTO locations(tiploc, nalco, name, name_normalised, name_passenger, disambiguation, stanox, crs) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING RETURNING tiploc,iid;", [tiploc, nlc, *fetch_names(description_tps), stanox, crs])
                     row = c.fetchone()
                     if row:
                         tl_map[row[0]] = row[1]
                 elif record_type=="TA":
                     replacement_tiploc = c_str(line[70:77])
                     if replacement_tiploc:
-                        c.execute("UPDATE locations SET (tiploc, nalco, name, stanox, crs) = (%s, %s, %s, %s, %s) WHERE tiploc = %s RETURNING iid;", (
-                            replacement_tiploc, nlc, description_tps, stanox, crs, tiploc))
+                        c.execute("UPDATE locations SET (tiploc, nalco, name, name_normalised, name_passenger, disambiguation, stanox, crs) = (%s, %s, %s, %s, %s, %s, %s, %s) WHERE tiploc = %s RETURNING iid;", (
+                            replacement_tiploc, nlc, *fetch_names(tiploc, description_tps), stanox, crs, tiploc))
                     else:
-                        c.execute("UPDATE locations SET (nalco, name, stanox, crs) = (%s, %s, %s, %s) WHERE tiploc = %s RETURNING iid;", (
-                            nlc, description_tps, stanox, crs, tiploc))
+                        c.execute("UPDATE locations SET (nalco, name, name_normalised, name_passenger, disambiguation, stanox, crs) = (%s, %s, %s, %s, %s, %s, %s) WHERE tiploc = %s RETURNING iid;", (
+                            nlc, *fetch_names(tiploc, description_tps), stanox, crs, tiploc))
 
             elif record_type == "TD":
                 tiploc = c_str(line[0:7])
