@@ -40,10 +40,10 @@ def initialise(d):
         );
         ALTER SEQUENCE location_iid_seq OWNED BY locations.iid;
         CREATE INDEX idx_location_iid    ON locations(tiploc);
-        CREATE INDEX idx_location_tiploc ON locations(tiploc);
+        CREATE UNIQUE INDEX idx_location_tiploc ON locations(tiploc);
         CREATE INDEX idx_location_stanox ON locations(stanox);
         CREATE INDEX idx_location_crs    ON locations(crs);
-        CREATE UNIQUE INDEX idx_location_nalco  ON locations(nalco);
+        CREATE UNIQUE INDEX idx_location_tiploc_nalco  ON locations(tiploc, nalco);
         """)
 
         c.execute("""CREATE SEQUENCE schedule_validity_iid_seq;
